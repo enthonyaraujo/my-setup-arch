@@ -2,6 +2,10 @@
 
 echo "Hyprdots..."
 
+git clone https://github.com/enthonyaraujo/hyprdots.git
+
+cd hyprdots/
+
 echo "Modificando pacote de linguagem..."
 
 sudo mv pt_BR /usr/share/i18n/locales/pt_BR 
@@ -10,24 +14,15 @@ sudo locale-gen
 echo "Verificando se o repositório multilib já está habilitado..."
 if grep -q "^\[multilib\]" /etc/pacman.conf; then
     echo "O repositório multilib já está habilitado."
-
+else
+	echo "Habilitando o repositório multilib..."
+	sudo sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf
+	sudo pacman -Sy
 fi
-
-echo "Habilitando o repositório multilib..."
-sudo sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf
-sudo pacman -Sy
-
 
 echo "Instalando dependências via pacman..."
 
 sudo pacman -S brightnessctl pavucontrol pipewire-alsa pipewire-audio pipewire-jack pipewire-pulse linux-headers base-devel nvidia nvidia-utils nvidia-settings lib32-nvidia-utils steam fastfetch obsidian gcc cmake spotify-launcher discord xournalpp flatpak gnome-boxes gnome-software showtime papers gnome-text-editor network-manager-applet python-pip blueman wofi waybar hyprpaper hyprlock hypridle udiskie ttf-firacode-nerd nautilus btop kitty adw-gtk-theme polkit
-
-flatpak install flathub com.github.reds.LogisimEvolution 
-flatpak install flathub com.rtosta.zapzap
-flatpak install flathub org.gnome.Snapshot
-#flatpak install flathub com.visualstudio.code
-flatpak install flathub org.libreoffice.LibreOffice
-
 
 mkdir /$HOME/aur
 cd /$HOME/aur/
